@@ -17,6 +17,7 @@ const Username = () => {
     validateOnBlur:false,
     validateOnChange: false,
     onSubmit: async (values) => {
+      //trim
       console.log(values)
     }
 
