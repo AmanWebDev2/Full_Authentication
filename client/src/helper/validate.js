@@ -22,6 +22,12 @@ export async function resetPasswordValidation(values) {
     return error;
 }
 
+/**validate profile page */
+export async function profileValidation(values) {
+    const error = emailVerify({},values);
+    return error;
+}
+
 /** validate register form */
 export async function registerValidation(values) {
     const error = usernameVerify({},values);
