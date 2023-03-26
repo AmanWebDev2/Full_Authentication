@@ -1,7 +1,10 @@
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
+
 const { PORT } = require('./config/serverConfig');
+const apiRoutes = require('./routes/index');
+const connect = require('./database/conn');
 
 const start = async() => {
 
@@ -11,11 +14,21 @@ const start = async() => {
     app.use(cors());
     // X-Powered-By header is used to inform what technology is used in the server side. This is an unnecessary header causing information leakage, so it should be removed from your application.
     app.disable('x-powered-by');
+    app.use('/api',apiRoutes);
 
-    console.log(process.env.PORT)
-    app.listen(PORT,()=>{
-        console.log(`server is listening on PORT http://localhost:${PORT}`);
+    /** start server when we have valid mongo db connection */
+    connect().then(()=>{
+        try {
+            app.listen(PORT,()=>{
+                console.log(`server is listening on PORT http://localhost:${PORT}`);
+            })
+        } catch (error) {
+            console.log('cannot connect to the server',error);
+        }
+    }).catch(err=>{
+        console.log('invalid db connection',err)
     })
+   
 }
 
 start();
