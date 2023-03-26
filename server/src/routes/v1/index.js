@@ -2,8 +2,9 @@ const express = require('express');
 const router = express.Router();
 
 const AppController = require('../../controllers/app-controller');
+const { UserMiddleware } = require('../../middlewares/index');
  
-router.post('/register',AppController.register);
+router.post('/register',UserMiddleware.validateRegisterUser,AppController.register);
 
 // send the mail
 router.post('/registerMail',(req,res)=>{
