@@ -15,7 +15,7 @@ router.post('/authenticate',(req,res)=>{
     res.end();
 })
 
-router.post('/login',AppController.login);
+router.post('/login',UserMiddleware.validateLogin,AppController.login);
 
 /** GET METHOD */
 router.get('/user/:username',AppController.getUser);

@@ -14,6 +14,22 @@ const validateRegisterUser = (req,res,next) => {
     next();
 };
 
+const validateLogin=(req,res,next)=>{
+    if(
+        !req.body.username ||
+        !req.body.password
+    ) {
+        return res.status(400).json({
+            data: [],
+            success: false,
+            message: 'something went wrong',
+            err: 'Email or password is missing !'
+        })
+    }
+    next();
+}
+
 module.exports = {
-    validateRegisterUser
+    validateRegisterUser,
+    validateLogin
 }
