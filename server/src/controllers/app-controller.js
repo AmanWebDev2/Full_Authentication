@@ -25,14 +25,14 @@ const register = async(req,res) => {
             profile: req.body.profile
         } 
         const user = await UserService.registerUser(data);
-        res.status(200).json({
+        return res.status(200).json({
             data:user,
             success: true,
             message: 'successfully register the user',
             err:{ },
         }) 
     } catch (error) {
-        res.status(500).json({
+        return res.status(500).json({
             data:[],
             success: false,
             message: 'unable to register the user',
@@ -50,14 +50,16 @@ const register = async(req,res) => {
  */
 const login = async(req,res) =>{
     try {
-        res.status(500).json({
-            data:[],
+    const { username, password } = req.body;
+    const response = await UserService.login(username,password);
+       return res.status(200).json({
+            data:response,
             success: true,
             message: 'successfully login',
-            err:error,
+            err:{},
         }) 
     } catch (error) {
-        res.status(500).json({
+        return res.status(500).json({
             data:[],
             success: false,
             message: 'unable to login',
@@ -66,12 +68,32 @@ const login = async(req,res) =>{
     }
 }
 
+const isAuthenticated=async(req,res)=>{
+    try {
+        const token = req.headers['x-access-token'];
+        const response = await UserService.isAuthenticate(token);
+        return res.status(200).json({
+            data:response,
+            success: true,
+            message: 'successfully authenticated',
+            err: {},
+        })
+    } catch (error) {
+        return res.status(500).json({
+            data:[],
+            success: false,
+            message: 'unable to authenticate',
+            err:error,
+        }) 
+    }
+}
+
 // http://localhost:8080/user/<username>
 const getUser=async(req,res)=>{
     try {
         
     } catch (error) {
-        res.status(500).json({
+        return res.status(500).json({
             data:[],
             success: false,
             message: 'unable to get the user',
@@ -210,5 +232,6 @@ module.exports = {
     verifyOTP,
     updateUser,
     register,
-    getUsers
+    getUsers,
+    isAuthenticated
 }

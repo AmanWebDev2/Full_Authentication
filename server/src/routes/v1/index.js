@@ -11,9 +11,7 @@ router.post('/registerMail',(req,res)=>{
     res.status(200).json('register mail router')
 })
 
-router.post('/authenticate',(req,res)=>{
-    res.end();
-})
+router.get('/isAuthenticate',AppController.isAuthenticated)
 
 router.post('/login',UserMiddleware.validateLogin,AppController.login);
 
