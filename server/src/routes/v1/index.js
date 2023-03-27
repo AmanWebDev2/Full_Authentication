@@ -21,6 +21,7 @@ router.post('/login',AppController.login);
 router.get('/user/:username',AppController.getUser);
 router.get('/generateOTP',AppController.generateOTP);
 router.get('/verifyOTP',AppController.verifyOTP);
+router.get('/users',AppController.getUsers)
 // reset all the variables
 router.get('/createResetSession',AppController.createResetSession);
 

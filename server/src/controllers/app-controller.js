@@ -1,4 +1,4 @@
-
+const { UserService } = require('../services/index');
 /**
  * 
  * @param {
@@ -14,11 +14,22 @@
  */
 const register = async(req,res) => {
     try {
-        res.status(500).json({
-            data:[],
+        const data = {
+            username: req.body.username,
+            email: req.body.email,
+            password: req.body.password,
+            mobile: req.body.mobile,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            address: req.body.address,
+            profile: req.body.profile
+        } 
+        const user = await UserService.registerUser(data);
+        res.status(200).json({
+            data:user,
             success: true,
-            message: 'successfullu register the user',
-            err:error,
+            message: 'successfully register the user',
+            err:{ },
         }) 
     } catch (error) {
         res.status(500).json({
@@ -64,6 +75,26 @@ const getUser=async(req,res)=>{
             data:[],
             success: false,
             message: 'unable to get the user',
+            err:error,
+        }) 
+    }
+}
+
+const getUsers=async(req,res)=>{
+    try {
+        console.log("working")
+        const users = await UserService.getUsers();
+        return res.status(200).json({
+            data:users,
+            success: true,
+            message: 'successfully fetched all the user',
+            err:error,
+        }) 
+    } catch (error) {
+        res.status(500).json({
+            data:[],
+            success: false,
+            message: 'unable to fetched the user',
             err:error,
         }) 
     }
@@ -178,5 +209,6 @@ module.exports = {
     resetPassword,
     verifyOTP,
     updateUser,
-    register
+    register,
+    getUsers
 }

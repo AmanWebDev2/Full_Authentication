@@ -12,6 +12,7 @@ const start = async() => {
     app.use(express.json());
     app.use(morgan('tiny'));
     app.use(cors());
+    app.use(express.urlencoded({extended:false}));
     // X-Powered-By header is used to inform what technology is used in the server side. This is an unnecessary header causing information leakage, so it should be removed from your application.
     app.disable('x-powered-by');
     app.use('/api',apiRoutes);
