@@ -13,7 +13,7 @@ router.post('/registerMail',(req,res)=>{
 
 router.get('/isAuthenticate',AppController.isAuthenticated)
 
-router.post('/login',UserMiddleware.validateLogin,AppController.login);
+router.post('/login',[UserMiddleware.validateLogin,UserMiddleware.verifyUser],AppController.login);
 
 /** GET METHOD */
 router.get('/user/:username',AppController.getUser);
