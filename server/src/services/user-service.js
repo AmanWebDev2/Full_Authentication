@@ -94,6 +94,18 @@ class UserService {
             throw error;
         }
     }
+
+    static async getUser(username) {
+        try {
+            const user = await UserRepository.getUserByUsername(username);
+            if(!user) throw {error: 'User does not exist',statusCode:404}
+            // mongoose return unnecessary data with object, so to convert it into json
+            const { password,...restInfo } = Object.assign({},user.toJSON());
+            return restInfo;
+        } catch (error) {
+            throw error;
+        }
+    }
 };
 
 module.exports = UserService;

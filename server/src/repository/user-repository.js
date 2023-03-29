@@ -22,10 +22,10 @@ class UserRepository {
 
     static async getUserByUsername(username) {
         try {
-            const user = await User.findOne({ username })
+            const user = await User.findOne({ username });
             return user;
         } catch (error) {
-            throw error;
+        throw error;
         }
     }
 

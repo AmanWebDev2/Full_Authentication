@@ -91,13 +91,21 @@ const isAuthenticated=async(req,res)=>{
 // http://localhost:8080/user/<username>
 const getUser=async(req,res)=>{
     try {
-        
+        const {username} = req.params;
+        const user = await UserService.getUser(username); 
+        return res.status(200).json({
+            data:user,
+            success: true,
+            message: 'successfully fetched the user',
+            err: {}
+        });
     } catch (error) {
-        return res.status(500).json({
+        const {statusCode,...rest} = error;
+        return res.status(statusCode ? statusCode: 500).json({
             data:[],
             success: false,
             message: 'unable to get the user',
-            err:error,
+            err:rest,
         }) 
     }
 }
