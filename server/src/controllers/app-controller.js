@@ -24,9 +24,9 @@ const register = async(req,res) => {
             address: req.body.address,
             profile: req.body.profile
         } 
-        const user = await UserService.registerUser(data);
+        const resp = await UserService.registerUser(data);
         return res.status(200).json({
-            data:user,
+            data:{username:resp},
             success: true,
             message: 'successfully register the user',
             err:{ },

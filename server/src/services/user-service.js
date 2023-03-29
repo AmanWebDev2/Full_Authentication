@@ -31,8 +31,8 @@ class UserService {
                 throw { error: "email already exist" };
             }
             
-            const user = await UserRepository.register(userData);
-            return user;
+            const resp = await UserRepository.register(userData);
+            return resp;
         } catch (error) {
             throw error;
         }

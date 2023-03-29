@@ -5,7 +5,7 @@ class UserRepository {
     static async register (data) {
         try {
             const user = await User.create(data);
-            return user;
+            return user.username;
         } catch (error) {
             throw error;
         }
