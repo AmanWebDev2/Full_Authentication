@@ -45,7 +45,6 @@ class UserService {
             if(!user) {
                 throw {error: 'user does not exits'};
             }
-            console.log(user);
             // order matters plainPassword and user.password
             const passwordMatched = bcypt.compareSync(plainPassword,user.password);
             if(!passwordMatched) {
@@ -56,7 +55,10 @@ class UserService {
 
             // create token
             const token = this.#createToken({id:user._id,email:user.email});
-            return token;
+            const resp = {
+                username:user.username,token
+            }
+            return resp;
 
         } catch (error) {
             throw error;
