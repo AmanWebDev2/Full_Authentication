@@ -39,8 +39,22 @@ const verifyUser =async(req,res,next)=>{
     }
 }   
 
+const validateUpdateUser=(req,res,next)=>{
+    if(
+        !req.query.id
+    ) {
+        return res.status(400).json({
+            data:[],
+            success: false,
+            message:'something went wrong', 
+            err: 'missing mandatory properties',
+        });
+    }
+    next();
+}
 module.exports = {
     validateRegisterUser,
     validateLogin,
-    verifyUser
+    verifyUser,
+    validateUpdateUser
 }

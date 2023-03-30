@@ -143,13 +143,22 @@ const getUsers=async(req,res)=>{
  */
 const updateUser =async(req,res)=>{
     try {
-        
+        const { id }  = req.query;
+        const data = req.body;
+        const resp = await UserService.update(id,data);
+        return res.status(200).json({
+            data: resp,
+            success: true,
+            message: 'successfully update a user',
+            err: {}
+        });
     } catch (error) {
-        res.status(500).json({
+        const { statusCode, ...rest } = error
+        res.status(statusCode?statusCode:500).json({
             data:[],
             success: false,
             message: 'unable to update the user',
-            err:error,
+            err:rest,
         }) 
     }
 }

@@ -46,6 +46,18 @@ class UserRepository {
             throw error;
         }
     }
+
+    static async update(id,data) {
+        try {   
+            const resp = await User.findOneAndUpdate({id},data,{new:true});
+            console.log(resp);
+            if(!resp) throw { error: 'User does not exist',statusCode: 404 }
+            const { password,...rest } = Object.assign({},resp.toJSON());
+            return rest;
+        } catch (error) {
+            throw error;
+        }
+    }
 };
 
 module.exports = UserRepository;

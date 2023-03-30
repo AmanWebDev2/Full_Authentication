@@ -106,6 +106,15 @@ class UserService {
             throw error;
         }
     }
+
+    static async update(id,data) {
+        try {
+            const resp = await UserRepository.update(id,data);
+            return resp;
+        } catch (error) {
+            throw error;
+        }
+    }
 };
 
 module.exports = UserService;
