@@ -32,10 +32,23 @@ const verifyUser =async(req,res,next)=>{
     try {
         const { username } = req.method == "GET" ? req.query : req.body;
         const user = await UserRepository.getUserByUsername(username);
-        if(!user) return res.status(404).send({error: 'User does not exist'})
+        if(!user) return res.status(404).json(
+            {
+                data:[],
+                success: false,
+                message:'something went wrong',
+                error: 'User does not exist'
+            })
         next();
     } catch (error) {
-        return res.status(403).send({error: 'Authentication Error'})
+        return res.status(500).json(
+            {
+                data:[],
+                success: false,
+                message:'something went wrong',
+                error: 'Authentication error'
+            }
+            )
     }
 }   
 
