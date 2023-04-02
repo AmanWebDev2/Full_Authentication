@@ -1,4 +1,7 @@
+const jwt = require('jsonwebtoken');
+
 const UserRepository = require("../repository/user-repository");
+const { JWT_KEY } = require('../config/serverConfig');
 
 const validateRegisterUser = (req,res,next) => {
     if(
@@ -65,9 +68,30 @@ const validateUpdateUser=(req,res,next)=>{
     }
     next();
 }
+
+const Auth=(req,res,next)=>{
+    try {
+        const token = req.headers['x-access-token'];
+        if(!token) res.status(400).send('missing token');
+        // verify token
+        const decode = jwt.verify(token,JWT_KEY);
+        if(!decode) res.status(400).send('not a valid token');
+        req.user = decode;
+        next();
+    } catch (error) {
+        res.status(500).json({
+            data: {},
+            success: false,
+            message: 'something went wrong',
+            err: 'Authentication failed'
+        })
+    }
+}
+
 module.exports = {
     validateRegisterUser,
     validateLogin,
     verifyUser,
-    validateUpdateUser
+    validateUpdateUser,
+    Auth
 }

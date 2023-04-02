@@ -24,7 +24,7 @@ router.get('/users',AppController.getUsers)
 router.get('/createResetSession',AppController.createResetSession);
 
 /** PUT METHOD */
-router.put('/updateUser',UserMiddleware.validateUpdateUser,AppController.updateUser);
+router.put('/updateUser',UserMiddleware.Auth,AppController.updateUser);
 router.put('/resetPassword',AppController.resetPassword);
 
  

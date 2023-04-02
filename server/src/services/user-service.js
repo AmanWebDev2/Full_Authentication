@@ -75,7 +75,9 @@ class UserService {
             if(!user) {
                 throw {error:'No user exist with corresponding token'};
             }
-            return user._id;
+            const { password, ...rest } = Object.assign({},user.toJSON());
+            console.log(rest);
+            return rest;
         } catch (error) {
             throw error;
         }

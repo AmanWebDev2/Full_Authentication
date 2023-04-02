@@ -143,7 +143,7 @@ const getUsers=async(req,res)=>{
  */
 const updateUser =async(req,res)=>{
     try {
-        const { id }  = req.query;
+        const { id }  = req.user;
         const data = req.body;
         const resp = await UserService.update(id,data);
         return res.status(200).json({
