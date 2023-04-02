@@ -166,9 +166,9 @@ const updateUser =async(req,res)=>{
 // GET - http://localhost:8080/api/v1/generateOTP
 const generateOTP=async(req,res)=>{
     try {
-        req.app.local.OTP = await UserService.generateOTP();
+        req.app.locals.OTP = await UserService.generateOTP();
         return res.status(201).json({
-            data:req.app.local.OTP,
+            data:req.app.locals.OTP,
             success: true,
             message: 'successfullu generated the OTP',
             err:{},
@@ -186,11 +186,19 @@ const generateOTP=async(req,res)=>{
 // GET - http://localhost:8080/api/v1/verifyOTP
 const verifyOTP=async(req,res)=>{
     try {
-        res.status(500).json({
+        const { code } = req.query;
+        if(!code) throw new Error('missong OTP')
+        if(parseInt(code) === parseInt(req.app.locals.OTP)) {
+            req.app.locals.OTP = null; // reset otp
+            req.app.locals.resetSession = null; // start session for reset passwod
+        }else {
+            throw {error: 'invalid OTP'}
+        }
+        return res.status(200).json({
             data:[],
             success: true,
-            message: 'successfullu verify the OTP',
-            err:error,
+            message: 'successfully verify the OTP',
+            err:{ },
         }) 
     } catch (error) {
         res.status(500).json({
@@ -206,18 +214,24 @@ const verifyOTP=async(req,res)=>{
 //     - http://localhost:8080/api/v1/createResetSession
 const createResetSession=async(req,res)=>{
     try {
-        res.status(500).json({
+        if(req.app.locals.resetSession) {
+            req.app.locals.resetSession = false;
+        }else {
+            throw {message: 'Session expired',statusCode:400}
+        }
+        return res.status(200).json({
             data:[],
             success: true,
-            message: 'successfully created the reset session',
+            message: 'access granted',
             err:error,
         }) 
     } catch (error) {
-        res.status(500).json({
+        const {statusCode,message} = error;
+        return res.status(statusCode?statusCode:500).json({
             data:[],
             success: false,
-            message: 'unable to verify the OTP',
-            err:error,
+            message: message ? message:'unable to verify the OTP',
+            err:error.stack,
         }) 
     }
 }

@@ -18,7 +18,7 @@ router.post('/login',[UserMiddleware.validateLogin,UserMiddleware.verifyUser],Ap
 /** GET METHOD */
 router.get('/user/:username',AppController.getUser);
 router.get('/generateOTP',[UserMiddleware.verifyUser,UserMiddleware.localVariables],AppController.generateOTP);
-router.get('/verifyOTP',AppController.verifyOTP);
+router.get('/verifyOTP',UserMiddleware.verifyUser,AppController.verifyOTP);
 router.get('/users',AppController.getUsers)
 // reset all the variables
 router.get('/createResetSession',AppController.createResetSession);

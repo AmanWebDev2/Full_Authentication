@@ -89,7 +89,7 @@ const Auth=(req,res,next)=>{
 }
 
 const localVariables=(req,res,next)=>{
-    req.app.local = {
+    req.app.locals = {
         OTP: null,
         resetSession: false
     }
