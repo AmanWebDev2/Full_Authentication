@@ -53,7 +53,6 @@ class UserRepository {
             const resp = await User.findOneAndUpdate({id},data,{new:true});
             if(!resp) throw { error: 'User does not exist',statusCode: 404 }
             const { password,...rest } = Object.assign({},resp.toJSON());
-            console.log(data,password);
             return rest;
         } catch (error) {
             throw error;

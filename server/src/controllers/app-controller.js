@@ -245,7 +245,7 @@ const resetPassword=async(req,res)=>{
         const resp = await UserService.resetPwd(username,password);
         req.app.locals.resetSession = false;
         return res.status(200).json({
-            data:resp,
+            data: [],
             success: true,
             message: 'successfully reset the password',
             err:{},
