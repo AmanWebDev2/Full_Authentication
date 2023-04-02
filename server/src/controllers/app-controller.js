@@ -168,7 +168,7 @@ const generateOTP=async(req,res)=>{
     try {
         req.app.locals.OTP = await UserService.generateOTP();
         return res.status(201).json({
-            data:req.app.locals.OTP,
+            data:{ OTP: req.app.locals.OTP },
             success: true,
             message: 'successfullu generated the OTP',
             err:{},
@@ -190,7 +190,7 @@ const verifyOTP=async(req,res)=>{
         if(!code) throw new Error('missong OTP')
         if(parseInt(code) === parseInt(req.app.locals.OTP)) {
             req.app.locals.OTP = null; // reset otp
-            req.app.locals.resetSession = null; // start session for reset passwod
+            req.app.locals.resetSession = true; // start session for reset passwod
         }else {
             throw {error: 'invalid OTP'}
         }
@@ -239,18 +239,24 @@ const createResetSession=async(req,res)=>{
 // PUT - http://localhost:8080/api/v1/resetPassword
 const resetPassword=async(req,res)=>{
     try {
-        res.status(500).json({
-            data:[],
+        // if not a reset session
+        if(!req.app.locals.resetSession) throw {message: 'session expired',statusCode:400};
+        const { username, password } = req.body;
+        const resp = await UserService.resetPwd(username,password);
+        req.app.locals.resetSession = false;
+        return res.status(200).json({
+            data:resp,
             success: true,
-            message: 'successfullu reset the password',
-            err:error,
+            message: 'successfully reset the password',
+            err:{},
         }) 
     } catch (error) {
-        res.status(500).json({
+        const { statusCode,message } = error;
+        return res.status(statusCode ? statusCode : 500).json({
             data:[],
             success: false,
-            message: 'unable to reset password',
-            err:error,
+            message: message ? message : 'unable to reset password',
+            err:error.stack,
         }) 
     }
 }

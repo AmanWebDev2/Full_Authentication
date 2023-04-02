@@ -128,6 +128,18 @@ class UserService {
             throw error
         }
     }
+
+    static async resetPwd(username,newPlainPassword) {
+        try {   
+            // check if user exist or not --> we can user verifyUser middleware
+            const hashedPwd = bcypt.hashSync(newPlainPassword,10); 
+            const user = await UserRepository.getUserByUsername(username);
+            const resp = await UserRepository.update(user.id,{password:hashedPwd});
+            return resp;
+        } catch (error) {
+            throw error;
+        }
+    }
 };
 
 module.exports = UserService;
