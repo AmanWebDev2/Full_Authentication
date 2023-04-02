@@ -166,14 +166,15 @@ const updateUser =async(req,res)=>{
 // GET - http://localhost:8080/api/v1/generateOTP
 const generateOTP=async(req,res)=>{
     try {
-        res.status(500).json({
-            data:[],
+        req.app.local.OTP = await UserService.generateOTP();
+        return res.status(201).json({
+            data:req.app.local.OTP,
             success: true,
             message: 'successfullu generated the OTP',
-            err:error,
+            err:{},
         }) 
     } catch (error) {
-        res.status(500).json({
+        return res.status(500).json({
             data:[],
             success: false,
             message: 'unable to generate the OTP',

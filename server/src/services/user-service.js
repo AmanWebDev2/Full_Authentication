@@ -1,8 +1,10 @@
 const { UserRepository } = require('../repository/index');
+const { JWT_KEY } = require('../config/serverConfig');
 
 const bcypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { JWT_KEY } = require('../config/serverConfig');
+const otpGenerator = require('otp-generator');
+
 class UserService {
 
     static #createToken(user) {
@@ -115,6 +117,15 @@ class UserService {
             return resp;
         } catch (error) {
             throw error;
+        }
+    }
+
+    static async generateOTP() {
+        try {
+            const otp = await otpGenerator.generate(6,{upperCaseAlphabets:false,lowerCaseAlphabets:false, specialChars: false});
+            return otp;
+        } catch (error) {
+            throw error
         }
     }
 };

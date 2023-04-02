@@ -88,10 +88,19 @@ const Auth=(req,res,next)=>{
     }
 }
 
+const localVariables=(req,res,next)=>{
+    req.app.local = {
+        OTP: null,
+        resetSession: false
+    }
+    next();
+}
+
 module.exports = {
     validateRegisterUser,
     validateLogin,
     verifyUser,
     validateUpdateUser,
-    Auth
+    Auth,
+    localVariables
 }
