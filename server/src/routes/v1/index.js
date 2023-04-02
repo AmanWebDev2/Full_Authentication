@@ -3,13 +3,12 @@ const router = express.Router();
 
 const AppController = require('../../controllers/app-controller');
 const { UserMiddleware } = require('../../middlewares/index');
+const { registerMail } = require('../../services/email-service');
  
 router.post('/register',UserMiddleware.validateRegisterUser,AppController.register);
 
 // send the mail
-router.post('/registerMail',(req,res)=>{
-    res.status(200).json('register mail router')
-})
+router.post('/registerMail',registerMail)
 
 router.get('/isAuthenticate',AppController.isAuthenticated)
 

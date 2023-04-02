@@ -5,6 +5,7 @@ const morgan = require('morgan');
 const { PORT } = require('./config/serverConfig');
 const apiRoutes = require('./routes/index');
 const connect = require('./database/conn');
+const { sendOTPMail } = require('./services/email-service');
 
 const start = async() => {
 
